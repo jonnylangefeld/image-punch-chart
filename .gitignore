@@ -1,0 +1,8 @@
+.idea
+.ipynb_checkpoints
+build
+dist
+test-images
+venv
+punch-chart.ipynb
+.DS_Store
