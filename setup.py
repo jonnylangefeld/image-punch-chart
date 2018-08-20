@@ -9,7 +9,11 @@ from setuptools import setup
 
 APP = ['punch-chart.py']
 DATA_FILES = []
-OPTIONS = {'argv_emulation': True}
+OPTIONS = {
+    'argv_emulation': True,
+    'packages': ['piexif', 'plotly'],
+    'iconfile': 'icon.icns'
+}
 
 setup(
     app=APP,

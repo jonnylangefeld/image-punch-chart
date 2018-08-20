@@ -1,5 +1,7 @@
 .idea
 .ipynb_checkpoints
+.vscode
+.eggs
 build
 dist
 test-images
