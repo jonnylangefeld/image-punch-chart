@@ -2,8 +2,8 @@
 
 import os
 import datetime
-import Tkinter as tk
-import tkFileDialog
+import tkinter as tk
+from tkinter import filedialog
 
 import piexif
 import plotly
@@ -58,12 +58,15 @@ def create_scatter(timestamps):
 
 class Application(tk.Frame):
     def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
-        self.grid()
+        super().__init__(master)
+        self.master = master
         self.master.title('Image Punch Chart')
+        self.create_widgets()
+        self.pack()
 
-        self.button = tk.Button(self, text="Select image directory", command=self.get_path, width=20)
-        self.button.grid()
+    def create_widgets(self):
+        self.select_dir_button = tk.Button(self, text="Select image directory", command=self.get_path, width=25)
+        self.select_dir_button.pack()
 
     @property
     def create_layout(self):
@@ -85,13 +88,21 @@ class Application(tk.Frame):
         return layout
 
     def get_path(self):
-        path = tkFileDialog.askdirectory(
+        try:
+            with open('last_path', 'r') as f:
+                initial_dir = f.read()
+        except:
+            print('no last path stored')
+            initial_dir = '~/'
+        path = filedialog.askdirectory(
             title="Select image directory",
-            initialdir=os.getcwd()
+            initialdir=initial_dir
         )
 
         if path:
             try:
+                with open('last_path', 'w') as f:
+                    f.write(path)
                 timestamps = get_timestamps(path)
                 fig = go.Figure(data=[create_scatter(timestamps)], layout=self.create_layout)
                 punch_chart = plotly.offline.plot(fig, filename='punch-chart.html', auto_open=True)
@@ -99,5 +110,7 @@ class Application(tk.Frame):
                 pass
 
 
-app = Application()
+root = tk.Tk()
+app = Application(master=root)
+app.update_idletasks()
 app.mainloop()
