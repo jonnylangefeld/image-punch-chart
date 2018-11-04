@@ -3,7 +3,7 @@
 .vscode
 .eggs
 build
-dist
+dist*
 test-images
 venv
 punch-chart.ipynb
